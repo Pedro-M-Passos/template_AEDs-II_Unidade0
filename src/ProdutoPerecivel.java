@@ -96,7 +96,13 @@ public class ProdutoPerecivel extends Produto{
      * @return Uma string no formato "2;descrição;preçoDeCusto;margemDeLucro;dataDeValidade"
      */
 	@Override
-    public String gerarDadosTexto() {
-		return null;
-	}
+	public String gerarDadosTexto() {
+    	DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    	return String.format("2;%s;%.2f;%.2f;%s",
+            descricao,
+            precoCusto,
+            margemLucro,
+            formato.format(dataDeValidade));
+	}	
 }

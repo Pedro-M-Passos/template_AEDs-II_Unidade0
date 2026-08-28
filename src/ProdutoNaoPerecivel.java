@@ -35,7 +35,7 @@ public class ProdutoNaoPerecivel extends Produto{
      * @return Uma string no formato "1;descrição;preçoDeCusto;margemDeLucro"
      */
 	@Override
-    public String gerarDadosTexto() {
-    	return null;
-    }
+     public String gerarDadosTexto() {
+          return String.format("1;%s;%.2f;%.2f", descricao, precoCusto, margemLucro);
+     }
 }
