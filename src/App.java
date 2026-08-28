@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class App {
@@ -12,7 +14,7 @@ public class App {
     static String nomeArquivoDados;
     
     /** Scanner para leitura de dados do teclado */
-    static Scanner teclado;
+    static Scanner teclado = new Scanner(System.in);
 
     /** Vetor de produtos cadastrados */
     static Produto[] produtosCadastrados;
@@ -21,6 +23,9 @@ public class App {
     static int quantosProdutos = 0;
 
     static Produto[] produtos;
+
+    
+
 
     /** Gera um efeito de pausa na CLI. Espera por um enter para continuar */
     static void pausa() {
@@ -125,7 +130,14 @@ public class App {
     
     /** Lista todos os produtos cadastrados, numerados, um por linha */
     static void listarTodosOsProdutos() {
-    	
+        int numero = 1;
+
+        for (Produto produto : produtos) {
+            if (produto != null) {
+                System.out.println(numero + " - " + produto);
+                numero++;
+            }
+        }
     }
     
     /**
@@ -133,8 +145,50 @@ public class App {
      * cria o objeto adequado de acordo com o tipo, inclui o produto no vetor.
      */
     static void cadastrarProduto() {
-    	
-    }  
+        Scanner teclado = new Scanner(System.in);
+
+        System.out.print("Tipo do produto (1 - Não perecível / 2 - Perecível): ");
+        int tipo = teclado.nextInt();
+        teclado.nextLine();
+
+        System.out.print("Descrição: ");
+        String descricao = teclado.nextLine();
+
+        System.out.print("Preço de custo: ");
+        double precoCusto = teclado.nextDouble();
+
+        System.out.print("Margem de lucro: ");
+        double margemLucro = teclado.nextDouble();
+
+        Produto novoProduto;
+
+        if (tipo == 1) {
+            novoProduto = new ProdutoNaoPerecivel(
+                    descricao, precoCusto, margemLucro
+            );
+        } else {
+            teclado.nextLine();
+
+            System.out.print("Data de validade (dd/MM/yyyy): ");
+            String data = teclado.nextLine();
+
+            DateTimeFormatter formato =
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            LocalDate validade = LocalDate.parse(data, formato);
+
+            novoProduto = new ProdutoPerecivel(
+                    descricao, precoCusto, margemLucro, validade
+            );
+        }
+
+        for (int i = 0; i < produtos.length; i++) {
+            if (produtos[i] == null) {
+                produtos[i] = novoProduto;
+                break;
+            }
+        }
+    }
     
 	public static void main(String[] args) {
 		teclado = new Scanner(System.in, Charset.forName("UTF-8"));
