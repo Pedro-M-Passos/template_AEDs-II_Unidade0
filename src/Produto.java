@@ -72,9 +72,19 @@ public abstract class Produto {
      * @return booleano true/false conforme o parâmetro possua a descrição igual ou não a este produto.
      */
     @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
+     public boolean equals(Object obj) {
+          if (this == obj) {
+               return true;
+          }
+
+          if (obj == null || !(obj instanceof Produto)) {
+               return false;
+          }
+
+          Produto outro = (Produto) obj;
+
+          return this.descricao.equalsIgnoreCase(outro.descricao);
+     }
     
     /**
      * Cria um produto a partir de uma linha de dados em formato texto. A linha de dados deve estar de acordo com a formatação
